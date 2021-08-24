@@ -37,8 +37,6 @@ function DevAdd(props) {
         };
         const response = await post('/api/articles', newArticle);
         // props.history.push(`/articles/${response.data._id}`);
-        console.log("response");
-        console.log(response);
         const succFail = response.status===200;
         postedUpdate(succFail?"successful":"failure");
         if(succFail){

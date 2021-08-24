@@ -69,7 +69,6 @@ function Card(props){
 
   function sendEmail(){
     //return data from article
-    console.log("Card Sending Email.");
     props.emailArticleUpdate(article);
     history.push("/email");
   }

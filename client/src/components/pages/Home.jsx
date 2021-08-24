@@ -1,7 +1,43 @@
-
 import React from 'react';
+import Card from "../cards/Card";
+
+function GetArticles(props, page){
+  if(props===undefined || page===undefined){
+    return null;
+  }
+
+  if(props.articles===undefined){
+    return null;
+  }
+
+  if(props.articles.length<1){
+    return null;
+  }
+
+  return(<div>
+    {props.articles.map((article)=>{
+      if(article[page]){
+        const likedValue = props.userDataValue && props.userDataValue.likedArticles.includes(article._id);
+        return(
+          <Card
+            key={article._id}
+            article={article}
+            onLikeUpdate={props.SendLikeUpdate}
+            likedValue={likedValue}
+            loggedIn={props.userDataValue}
+            emailArticleUpdate={props.emailArticleUpdate}
+          />
+        );
+      }
+
+      return null;
+    })}
+  </div>);
+}
 
 function Home(props) {
+  const articles = GetArticles(props, "home");
+
   return (<div className="shell">
     <div className="home">
       <h1>Welcome to MooseBear's Smithery.<br />The home of all of my outrageous works.</h1>
@@ -31,7 +67,7 @@ function Home(props) {
       <br/><br/>
     </div>
     <div className="websiteContent">
-      {props.articles}
+      {articles}
     </div>
   </div>);
 }

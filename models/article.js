@@ -33,20 +33,16 @@ const articleSchema = new mongoose.Schema({
     required: [true, "Date can't be blank"]
   },
   home: {
-    type: Boolean,
-    default: true
+    type: Boolean
   },
   all: {
-    type: Boolean,
-    default: true
+    type: Boolean
   },
   print: {
-    type: Boolean,
-    default: true
+    type: Boolean
   },
   jewelry: {
-    type: Boolean,
-    default: true
+    type: Boolean
   }
 });
 

@@ -39,7 +39,6 @@ function DevEdit(props){
   }
 
   function handleSubmit() {
-    console.log("submitting");
     // console.log(!article.title + " " + !article.content + " " + " " + !article.imageResult + " " + !article.imageName + " " + !article.home + " " + !article.all + " " + !article.print + " " + !article.jewelry );
     if(!article.title || !article.content || !article.imageResult || !article.imageName) return
     const articleToSend = {...article, "home": article.home==="on", "all": article.all==="on", "print": article.print==="on", "jewelry": article.jewelry==="on"};
@@ -58,8 +57,6 @@ function DevEdit(props){
       }
     }
     patchArticle();
-    console.log("submit edit");
-    console.log(article);
   }
 //checkbox problem
   function changeImage(event){

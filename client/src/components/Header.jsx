@@ -36,7 +36,7 @@ function Header(props){
         <p onClick={()=>history.push("/")}>Home</p>
         <p onClick={()=>history.push("/all")}>View All</p>
         <p onClick={()=>history.push("/prints")}>3D Prints</p>
-        <p onClick={()=>history.push("/smithery")}>Metallurgy</p>
+        <p onClick={()=>history.push("/smithery")}>Smithery</p>
         {props.VerifyAdmin && <p onClick={()=>history.push("/dev")}>Developer</p>}
       </div>
     </div>
@@ -48,7 +48,7 @@ function Header(props){
           <p onClick={()=>history.push("/")}>Home</p>
           <p onClick={()=>history.push("/all")}>View All</p>
           <p onClick={()=>history.push("/prints")}>3D Prints</p>
-          <p onClick={()=>history.push("/smithery")}>Metallurgy</p>
+          <p onClick={()=>history.push("/smithery")}>Smithery</p>
           {props.VerifyAdmin && <p onClick={()=>history.push("/dev")}>Developer</p>}
         </div>
       </div>

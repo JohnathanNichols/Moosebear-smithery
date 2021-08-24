@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from 'axios';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import Header from "./components/Header";
-import Card from "./components/cards/Card";
 import Transfer from "./components/pages/Transfer";//done
 import Home from "./components/pages/Home";//done
 import All from "./components/pages/All";//done
@@ -70,9 +69,6 @@ function App() {
     if(props.newVal !== userLikesArticle){
       let likedArticles = userDataValue.likedArticles;
 
-      console.log("likedArticles");
-      console.log(likedArticles);
-
       //if the new value is to add the article, then send the updated article
       if(props.newVal){
         likedArticles.push(props._id);
@@ -102,80 +98,6 @@ function App() {
         <p>Copyright © {currentYear}</p>
       </footer>
     );
-  }
-
-  //gets the articles based on the route
-  function GetArticles(route){
-    if(articles === undefined){
-      return null;
-    }
-
-    if(articles.length < 1){
-      return null;
-    }
-
-    function GetArticlesByDisplayPage(props){
-      return(<div>
-        {articles.map((article)=>{
-          if(article[props]){
-            const likedValue = userDataValue && userDataValue.likedArticles.includes(article._id);
-            return(
-              <Card
-                key={article._id}
-                article={article}
-                onLikeUpdate={SendLikeUpdate}
-                likedValue={likedValue}
-                loggedIn={userDataValue}
-                emailArticleUpdate={emailArticleUpdate}
-              />
-            );
-          }
-
-          return null;
-        })}
-      </div>);
-    }
-
-    switch (route){
-      //Homepage :: all :: print :: jewelry
-      case "home":
-      case "all":
-      case "print":
-      case "jewelry":
-        return GetArticlesByDisplayPage(route);
-      case "user":
-        //verify user data first
-        if(userDataValue===undefined){
-          return;
-        }
-
-        if(userDataValue.likedArticles===undefined){
-          return;
-        }
-
-        if(userDataValue.likedArticles.length<1){
-          return;
-        }
-
-        return (<div>{articles.map((article)=>{
-          if(userDataValue.likedArticles.includes(article._id)){
-            return(
-              <Card
-                key={article._id}
-                article={article}
-                onLikeUpdate={SendLikeUpdate}
-                likedValue={true}
-                loggedIn={userDataValue}
-                emailArticleUpdate={emailArticleUpdate}
-              />
-            );
-          }else{
-            return null;
-          }
-        })}</div>);
-      default:
-        return;
-    }
   }
 
   //Sets an interval to grab articles once every 5 minutes
@@ -208,22 +130,34 @@ function App() {
         />
         <Route exact path="/">
           <Home
-            articles={GetArticles("home")}
+            articles={articles}
+            userDataValue={userDataValue}
+            SendLikeUpdate={SendLikeUpdate}
+            emailArticleUpdate={emailArticleUpdate}
           />
         </Route>
         <Route exact path="/all">
           <All
-            articles={GetArticles("all")}
+            articles={articles}
+            userDataValue={userDataValue}
+            SendLikeUpdate={SendLikeUpdate}
+            emailArticleUpdate={emailArticleUpdate}
           />
         </Route>
         <Route exact path="/prints">
           <Prints
-            articles={GetArticles("print")}
+            articles={articles}
+            userDataValue={userDataValue}
+            SendLikeUpdate={SendLikeUpdate}
+            emailArticleUpdate={emailArticleUpdate}
           />
         </Route>
         <Route exact path="/smithery">
           <Smithery
-            articles={GetArticles("jewelry")}
+            articles={articles}
+            userDataValue={userDataValue}
+            SendLikeUpdate={SendLikeUpdate}
+            emailArticleUpdate={emailArticleUpdate}
           />
         </Route>
         <Route exact path="/email">
@@ -235,7 +169,9 @@ function App() {
         <Route exact path="/home">
           <UserHome
             userDataValue={userDataValue}
-            articles={GetArticles("user")}
+            articles={articles}
+            SendLikeUpdate={SendLikeUpdate}
+            emailArticleUpdate={emailArticleUpdate}
           />
         </Route>
         <Route exact path="/login">
@@ -246,11 +182,7 @@ function App() {
           />
         </Route>
         <Route exact path="/dev">
-          {verifiedAdminValue && <Dev
-            verifyAdmin={verifiedAdminValue}
-            articles={GetArticles()}
-            userDataValue={userDataValue}
-          />}
+          {verifiedAdminValue && <Dev/>}
           {!verifiedAdminValue && <Transfer loc={"/"} />}
         </Route>
         <Route exact path="*">
@@ -265,6 +197,85 @@ function App() {
 export default App;
 
 //Discarded code
+
+/*Removed GetArticles so they can be sorted on their respective pages
+//gets the articles based on the route
+function GetArticles(route){
+  if(articles === undefined){
+    return null;
+  }
+
+  if(articles.length < 1){
+    return null;
+  }
+
+  function GetArticlesByDisplayPage(props){
+    return(<div>
+      {articles.map((article)=>{
+        console.log("props");
+          console.log(props);
+        if(article[props]){
+          const likedValue = userDataValue && userDataValue.likedArticles.includes(article._id);
+          return(
+            <Card
+              key={article._id}
+              article={article}
+              onLikeUpdate={SendLikeUpdate}
+              likedValue={likedValue}
+              loggedIn={userDataValue}
+              emailArticleUpdate={emailArticleUpdate}
+            />
+          );
+        }
+
+        return null;
+      })}
+    </div>);
+  }
+
+  switch (route){
+    //Homepage :: all :: print :: jewelry
+    case "home":
+    case "all":
+    case "print":
+    case "jewelry":
+      return GetArticlesByDisplayPage(route);
+    case "user":
+      //verify user data first
+      if(userDataValue===undefined){
+        return;
+      }
+
+      if(userDataValue.likedArticles===undefined){
+        return;
+      }
+
+      if(userDataValue.likedArticles.length<1){
+        return;
+      }
+
+      return (<div>{articles.map((article)=>{
+        if(userDataValue.likedArticles.includes(article._id)){
+          return(
+            <Card
+              key={article._id}
+              article={article}
+              onLikeUpdate={SendLikeUpdate}
+              likedValue={true}
+              loggedIn={userDataValue}
+              emailArticleUpdate={emailArticleUpdate}
+            />
+          );
+        }else{
+          return null;
+        }
+      })}</div>);
+    default:
+      return;
+  }
+}
+
+*/
 
 /* GetDev function removed to be ran exclusively in Dev.jsx
   //if the user is logged in and a developer then they can access dev pages

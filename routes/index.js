@@ -36,6 +36,7 @@ router.post('/articles', function(req, res) {
 });
 
 //Verified 8/24
+//Possible error where booleans are incorrectly set to true :: attempted fix = remove default from models.article.js
 router.patch('/articles/:id', function(req, res) {
   Article.findByIdAndUpdate(req.params.id, req.body)
     .then(function() {
@@ -140,7 +141,7 @@ router.post('/sendEmail', function(req, res) {
       text: req.body.message, // plain text body
     });
 
-    console.log("Message sent: %s", info.messageId);
+    // console.log("Message sent: %s", info.messageId);
   }
   sendMail();
   res.send("Received");
